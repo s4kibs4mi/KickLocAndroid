@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
     package="ninja.sakib.kicklocandroid">
 
     <application
@@ -9,7 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.activities.GeoLocationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".services.GeoLocationService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.MQConnectionService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
