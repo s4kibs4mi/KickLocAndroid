@@ -5,9 +5,10 @@
 
 #### To Test
 1. Install the app
-2. Connect to host = sakib.ninja, port = 1883 from any MQTT client
-3. Subscribe to `/kickloc/locations`
-4. You will receive json formatted message
+2. Turn on GPS
+3. Connect to host = sakib.ninja, port = 1883 from any MQTT client
+4. Subscribe to `/kickloc/locations`
+5. You will receive json formatted message
 ```json
 {
   "latitude": 23.756262497875795,
