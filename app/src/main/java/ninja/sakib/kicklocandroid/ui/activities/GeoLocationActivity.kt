@@ -6,6 +6,7 @@ import com.arellomobile.mvp.MvpActivity
 import ninja.sakib.kicklocandroid.R
 import ninja.sakib.kicklocandroid.models.GeoLocation
 import ninja.sakib.kicklocandroid.services.GeoLocationService
+import ninja.sakib.kicklocandroid.services.MQConnectionService
 import ninja.sakib.kicklocandroid.ui.views.GeoLocationView
 import ninja.sakib.kicklocandroid.utils.getMapDefaultZoomLevel
 import ninja.sakib.kicklocandroid.utils.isServiceRunning
@@ -69,6 +70,10 @@ class GeoLocationActivity : MvpActivity(), GeoLocationView, ItemizedIconOverlay.
     private fun startServiceIfNotStarted() {
         if (isServiceRunning(GeoLocationService::class.java, this).not()) {
             val serviceIntent = Intent(applicationContext, GeoLocationService::class.java)
+            startService(serviceIntent)
+        }
+        if (isServiceRunning(MQConnectionService::class.java, this).not()) {
+            val serviceIntent = Intent(applicationContext, MQConnectionService::class.java)
             startService(serviceIntent)
         }
     }

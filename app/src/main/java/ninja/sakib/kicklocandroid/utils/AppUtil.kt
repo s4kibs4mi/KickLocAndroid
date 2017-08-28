@@ -20,7 +20,10 @@ fun getMinimumLocationUpdateDistance() = 10f     // In Meter
 
 fun getMqttServerUri() = "tcp://sakib.ninja:1883"
 
-fun getDeviceId(): String = Settings.Secure.ANDROID_ID
+fun getDeviceId(context: Context): String =
+        Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+
+fun getMqLocationEndpoint() = "/kickloc/locations"
 
 fun logD(tag: String, message: String) {
     Log.d(tag, message)

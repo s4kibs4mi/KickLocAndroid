@@ -6,12 +6,10 @@ import android.os.IBinder
 import com.eclipsesource.json.JsonObject
 import ninja.sakib.kicklocandroid.models.GeoLocation
 import ninja.sakib.kicklocandroid.utils.getDeviceId
+import ninja.sakib.kicklocandroid.utils.getMqLocationEndpoint
 import ninja.sakib.kicklocandroid.utils.getMqttServerUri
 import ninja.sakib.kicklocandroid.utils.logD
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
-import org.eclipse.paho.client.mqttv3.MqttAsyncClient
-import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.eclipse.paho.client.mqttv3.*
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -27,6 +25,8 @@ class MQConnectionService : Service(), MqttCallback {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        logD("Where", "MQServiceHasBeenStarted")
+
         connectToServer()
         return START_STICKY
     }
@@ -35,6 +35,7 @@ class MQConnectionService : Service(), MqttCallback {
         try {
             thread(start = true) {
                 mqttClient = MqttAsyncClient(getMqttServerUri(), MqttAsyncClient.generateClientId(), MemoryPersistence())
+                mqttClient.setCallback(this)
                 mqttClient.connect()
             }
         } catch (ex: Exception) {
@@ -55,6 +56,8 @@ class MQConnectionService : Service(), MqttCallback {
     }
 
     override fun connectionLost(cause: Throwable?) {
+        logD("MQConnection", "Connection lost, ${cause!!.message}")
+
         thread(start = true) {
             Thread.sleep(5000)
             reconnectToServer()
@@ -68,10 +71,12 @@ class MQConnectionService : Service(), MqttCallback {
         val locationPack = JsonObject()
                 .add("latitude", geoLocation.latitude)
                 .add("longitude", geoLocation.longitude)
-                .add("deviceId", getDeviceId())
+                .add("deviceId", getDeviceId(applicationContext))
+
+        logD("MqttSend", locationPack.toString())
 
         if (isClientConnected()) {
-            mqttClient.publish("", locationPack.toString().toByteArray(), 2, false)
+            mqttClient.publish(getMqLocationEndpoint(), locationPack.toString().toByteArray(), 2, false)
         }
     }
 

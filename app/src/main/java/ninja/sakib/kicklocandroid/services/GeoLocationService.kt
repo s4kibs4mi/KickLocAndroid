@@ -19,7 +19,7 @@ class GeoLocationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        logD("Where", "ServiceHasBeenStarted")
+        logD("Where", "GeoServiceHasBeenStarted")
 
         registerToLocationProvider()
         return START_STICKY
