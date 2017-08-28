@@ -16,3 +16,11 @@
   "deviceId": "73c1098d5e06f6b00"
 }
 ```
+
+![](https://github.com/s4kibs4mi/KickLocAndroid/blob/master/app/src/main/res/extra/ScreenShot2.png?raw=true)
+
+## License
+
+Copyright © Sakib Sami
+
+Distributed under MIT license
